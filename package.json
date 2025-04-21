@@ -1,0 +1,33 @@
+{
+    "name": "tel",
+    "version": "0.0.1",
+    "private": true,
+    "description": "",
+    "engines": {
+        "node": ">=19.0.0"
+    },
+    "dependencies": {
+    },
+    "devDependencies": {
+        "@tsconfig/node-lts-strictest-esm": "18.12.1",
+        "@types/node": "18.11.9",
+        "@typescript-eslint/eslint-plugin": "5.44.0",
+        "@typescript-eslint/parser": "5.44.0",
+        "eslint": "8.28.0",
+        "ts-node": "10.9.1",
+        "tslint": "6.1.3",
+        "typescript": "4.9.3"
+    },
+    "scripts": {
+        "validate": "tsc --noEmit && npx eslint src",
+        "test": "node tests"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/alexbezhan/tel.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "type": "module"
+}
