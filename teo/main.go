@@ -59,7 +59,6 @@ func main() {
         var tokensNew []Token
 
 
-
         for i := range tokens {
             token0 := &tokens[i]
             var token1 *Token
@@ -109,12 +108,14 @@ func main() {
                 tokensNew = append(tokensNew, Token{tpe: TokenTypeName, text: name})
 
                 call := substrings[1]
-                for j := i+1; ; j++ {
-                    token := tokens[j]
-                    call += " " + token.text
+                if i < len(tokens) - 1 {
+                    for j := i+1; ; j++ {
+                        token := tokens[j]
+                        call += " " + token.text
 
-                    if strings.Contains(token.text, ")") {
-                        break
+                        if strings.Contains(token.text, ")") {
+                            break
+                        }
                     }
                 }
 
