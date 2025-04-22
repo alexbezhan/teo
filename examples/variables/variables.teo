@@ -14,6 +14,7 @@ function main() {
     str := "Hello World"
     std.println(str)
 
-    str2 := "Hello World2"
+    str2: string
+    str2 = "Hello World2"
     std.println(str2)
 }

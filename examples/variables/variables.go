@@ -13,6 +13,7 @@ func main() {
 	str := "Hello World"
 	fmt.Println(str)
 
-	str2 := "Hello World2"
+	var str2 string
+	str2 = "Hello World2"
 	fmt.Println(str2)
 }
