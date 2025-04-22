@@ -3,5 +3,7 @@ package main
 import "std"
 
 function main() {
-    std.println("Hello World")
+    i: int
+    i = 42
+    std.println(i)
 }
