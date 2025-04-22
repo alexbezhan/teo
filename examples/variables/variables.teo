@@ -3,7 +3,13 @@ package main
 import "std"
 
 function main() {
-    i: int
-    i = 42
-    std.println(i)
+    a: int
+    a = 1
+    std.println(a)
+
+
+    b := 2
+    std.println(b)
+
+    str := "Hello World"
 }

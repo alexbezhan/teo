@@ -3,7 +3,10 @@ package main
 import "fmt"
 
 func main() {
-var i int
-i = 42
-fmt.Println(i)
+var a int
+a = 1
+fmt.Println(a)
+b := 2
+fmt.Println(b)
+str := "Hello
 }

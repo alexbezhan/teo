@@ -59,7 +59,15 @@ func compileSourceFile(fileText string, filePathOut string) {
     // identify tokens and append
     var tokensNew []Token
     for i := range tokens {
+        var tokenPrev Token
+        if i > 0 {
+            tokenPrev = tokens[i-1]
+        } else {
+            tokenPrev = tokenNew()
+        }
+
         token0 := &tokens[i]
+
         var token1 *Token
         if i < len(tokens) -1 {
             token1 = &tokens[i+1]
@@ -103,6 +111,10 @@ func compileSourceFile(fileText string, filePathOut string) {
             token0.tpe = TokenTypeScopeClose
 
             tokensNew = append(tokensNew, *token0)
+        } else if strings.Count(token0.text, ":=") == 1 {
+            tokensNew = append(tokensNew, Token{tpe: TokenTypeName, text: tokenPrev.text})
+            tokensNew = append(tokensNew, Token{tpe: TokenTypeDeclAssignment, text: ":="})
+            tokensNew = append(tokensNew, Token{tpe: TokenTypeExpr, text: token1.text})
         } else if strings.Count(token0.text, ".") == 1 {
             substrings := strings.Split(token0.text, ".")
             name := substrings[0]
@@ -134,12 +146,8 @@ func compileSourceFile(fileText string, filePathOut string) {
 
             tokensNew = append(tokensNew, Token{tpe: TokenTypeType, text: token1.text})
         } else if strings.Count(token0.text, "=") == 1 {
-            tokenPrev := tokens[i-1]
             tokensNew = append(tokensNew, Token{tpe: TokenTypeName, text: tokenPrev.text})
-
             tokensNew = append(tokensNew, Token{tpe: TokenTypeEquals, text: "="})
-
-            token1 := tokens[i+1]
             tokensNew = append(tokensNew, Token{tpe: TokenTypeExpr, text: token1.text})
         }
     }
@@ -244,6 +252,13 @@ func compileSourceFile(fileText string, filePathOut string) {
                         exprGo := token2.text
                         textGoScope.WriteString(exprGo)
                         textGoScope.WriteString("\n")                        
+                    } else if token1.tpe == TokenTypeDeclAssignment {
+                        textGoScope.WriteString(nameGo)
+                        textGoScope.WriteString(" := ")
+
+                        exprGo := token2.text
+                        textGoScope.WriteString(exprGo)
+                        textGoScope.WriteString("\n")                        
                     }
                 }
             }
@@ -331,6 +346,7 @@ const (
     TokenTypeType = 11
     TokenTypeEquals = 12
     TokenTypeExpr = 13
+    TokenTypeDeclAssignment = 14
 )
 
 var tokenTypeStrings = map[TokenType]string{
@@ -348,6 +364,7 @@ var tokenTypeStrings = map[TokenType]string{
     TokenTypeType: "type",
     TokenTypeEquals: "eqls",
     TokenTypeExpr: "expr",
+    TokenTypeDeclAssignment: "dass",
 }
 
 func (tt TokenType) String() string {
