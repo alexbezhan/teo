@@ -12,4 +12,8 @@ function main() {
     std.println(b)
 
     str := "Hello World"
+    std.println(str)
+
+    str2 := "Hello World2"
+    std.println(str2)
 }

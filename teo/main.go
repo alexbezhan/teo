@@ -114,7 +114,9 @@ func compileSourceFile(fileText string, filePathOut string) {
         } else if strings.Count(token0.text, ":=") == 1 {
             tokensNew = append(tokensNew, Token{tpe: TokenTypeName, text: tokenPrev.text})
             tokensNew = append(tokensNew, Token{tpe: TokenTypeDeclAssignment, text: ":="})
-            tokensNew = append(tokensNew, Token{tpe: TokenTypeExpr, text: token1.text})
+
+            expr := readExprToCompletion(token1.text, i+1, tokens)
+            tokensNew = append(tokensNew, Token{tpe: TokenTypeExpr, text: expr})
         } else if strings.Count(token0.text, ".") == 1 {
             substrings := strings.Split(token0.text, ".")
             name := substrings[0]
@@ -148,7 +150,9 @@ func compileSourceFile(fileText string, filePathOut string) {
         } else if strings.Count(token0.text, "=") == 1 {
             tokensNew = append(tokensNew, Token{tpe: TokenTypeName, text: tokenPrev.text})
             tokensNew = append(tokensNew, Token{tpe: TokenTypeEquals, text: "="})
-            tokensNew = append(tokensNew, Token{tpe: TokenTypeExpr, text: token1.text})
+
+            expr := readExprToCompletion(token1.text, i+1, tokens)
+            tokensNew = append(tokensNew, Token{tpe: TokenTypeExpr, text: expr})
         }
     }
 
@@ -381,4 +385,23 @@ func stringUpperFirstChar(s string) string {
         return s
     }
     return string(lc) + s[size:]
+}
+
+func readExprToCompletion(exprBeginning string, index int, tokens []Token) string {
+    expr := exprBeginning
+    if strings.Count(expr, "\"") == 1 {
+        // read until closing quote
+        for i := index+1; ; i++ {
+            if i >= len(tokens) {
+                break
+            }
+            token := tokens[i]
+            expr += " " + token.text
+
+            if strings.Contains(token.text, "\"") {
+                break
+            }
+        }
+    }
+    return expr
 }
