@@ -1,0 +1,7 @@
+package main
+
+import "std"
+
+function main() {
+    std.println("Hello World")
+}
